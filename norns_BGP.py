@@ -5,6 +5,7 @@ import time
 Start = time.time()
 
 nr = InitNornir()
+# https://nornir.readthedocs.io/en/3.0.0/index.html#
 
 output = nr.run(task=napalm_get, getters=['get_bgp_neighbors'])
 # https://napalm.readthedocs.io/en/latest/base.html?highlight=bgp#napalm.base.base.NetworkDriver.get_bgp_neighbors
