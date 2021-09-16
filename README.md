@@ -1,5 +1,5 @@
-# BGP_Nornir
-Fetching BGP Peer details using Nornir
+# My_Nornir
+_My learning journey through Nornir in Python3.9_
 
-_My first attempt at using Nornir in Python3.9 to fetch BGP Peer details such as Status,Peer AS,VRF/Global,Prefix Count etc._
-
+1. BGP_Norns.py 
+  >  To fetch BGP Peer details such as Status,Peer AS,VRF/Global,Prefix Count etc.
