@@ -2,7 +2,7 @@ R1:
   hostname: sr.norns_BGP1.lab
   groups:
     - ios
-R3:
+R5:
   hostname: sr.norns_BGP3.lab
   groups:
     - ios
