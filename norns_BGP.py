@@ -1,5 +1,8 @@
 from nornir import InitNornir
 from nornir_napalm.plugins.tasks import napalm_get
+import time
+
+Start = time.time()
 
 nr = InitNornir()
 
@@ -31,3 +34,6 @@ for router in router_list:
     R_result = output[router][0].result
     BGP = R_result['get_bgp_neighbors']
     BGP_peers = BGP_peer_fn(BGP)
+   
+End = time.time()
+print(f"Script exec time : {End-Start}")
