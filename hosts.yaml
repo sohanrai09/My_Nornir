@@ -1,0 +1,4 @@
+R1:
+  hostname: 192.168.20.200
+  groups:
+    - ios
