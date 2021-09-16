@@ -27,7 +27,7 @@ def BGP_peer_fn(BGP_x):
             else:
                 print(f"Peer_{BGP_x[item]['peers'][peer]['remote_as']} {peer} ({item}) is DOWN!\n")
 
-router_list = dict.keys(output) # Nornir output is a Dict with 'hosts' in hosts.yaml as keys
+router_list = dict.keys(output) # Nornir output is a Dict with 'hosts(keys)' in hosts.yaml as keys
 
 for router in router_list:
     print(f"~~~~~~~ BGP Status on  {router} ~~~~~~~\n")
