@@ -1,0 +1,10 @@
+---
+devices:
+  username: PY
+  password: PY
+
+ios:
+  platform: ios
+  groups:
+    - devices
+
