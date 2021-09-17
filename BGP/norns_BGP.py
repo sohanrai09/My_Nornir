@@ -1,3 +1,6 @@
+''' This script fetches BGP neighbour details such as Peer Status, Uptime, Peer AS, VRF/Global, Prefix counters.'''
+
+
 from nornir import InitNornir
 from nornir_napalm.plugins.tasks import napalm_get
 import time
