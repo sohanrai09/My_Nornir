@@ -26,7 +26,6 @@ def save_fn(Conf):
     else:
         
         # https://napalm.readthedocs.io/en/latest/base.html?highlight=config#napalm.base.base.NetworkDriver.cli
-        
         wr = ['wr mem']
         nr.run(task=napalm_cli, commands=[wr])
         # Using NAPALM CLI option, sending "wr mem" to save the running configuration
