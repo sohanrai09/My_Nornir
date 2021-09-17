@@ -1,4 +1,4 @@
-''' This script checks if the running config on the device is saved, if it's not, then save the config.'''
+''' This script checks if the running config on the device is saved, if it's not, config is saved.'''
 
 from nornir import InitNornir
 from nornir_napalm.plugins.tasks import napalm_get,napalm_cli
