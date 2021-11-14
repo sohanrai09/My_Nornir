@@ -6,3 +6,6 @@ _My learning journey with Nornir in Python3.9_
 
 2. config_aduti.py
   > To checking if the configuration is saved, save if not.
+
+3. env_check.py
+  > To gather environment details of router like CPU, RAM usage, Uptime and to find the last change occurance along with backing up the current configuration.

@@ -1,44 +1,81 @@
-''' This script checks if the running config on the device is saved, if it's not, config is saved.'''
+''' This script fetches BGP neighbour details such as Peer Status, Uptime, Peer AS, VRF/Global, Prefix counters.
+References:
+Working with NORNIR Objects,results etc. https://gist.github.com/danielmacuare/c647880cfc99a605d25c3b669ab63fc7
+NORNIR Plugins https://nornir.tech/nornir/plugins/ '''
+
 
 from nornir import InitNornir
-from nornir_napalm.plugins.tasks import napalm_get,napalm_cli
-import time,re
+from nornir_napalm.plugins.tasks import napalm_get
+from nornir_netmiko.tasks import netmiko_send_command
+from tabulate import tabulate
+import pandas as pd
+import re,datetime
 
-Start = time.time()
+
+Start = datetime.datetime.now()
+
+mydict = {'Router':[],'CPU':[],'RAM':[],'Uptime':[],'Last_Reload':[],'Last_Change':[],'Conf_backup':[]}
+# Creating a Dict to capture the output and then feed it to Pandas to create a dataframe.
 
 nr = InitNornir()
+# https://nornir.readthedocs.io/en/3.0.0/index.html#
 
-# https://napalm.readthedocs.io/en/latest/base.html?highlight=config#napalm.base.base.NetworkDriver.get_config
-output = nr.run(task=napalm_get, getters=['get_config'])
+output = nr.run(task=napalm_get, getters=['get_environment','get_facts','get_config'])
+# https://napalm.readthedocs.io/en/latest/base.html#
+
+reason = nr.run(task=netmiko_send_command,command_string='sh version | i reload.reason')
+Last_change = nr.run(task=netmiko_send_command,command_string='sh startup-config | i Last.*change')
+# https://pynet.twb-tech.com/blog/automation/netmiko.html
 
 
-def save_fn(Conf):
+def Env_fn(Env,Rns,Last_Ch):
+    # Function to gather Environment details such as RAM,CPU and reason for last reload along with Last change occurance.
+
+    CPU = Env['get_environment']['cpu'][0][f'%usage']
+    RAM = (Env['get_environment']['memory']['used_ram']/Env['get_environment']['memory']['available_ram'])*100
+    Uptime = Env['get_facts']['uptime']
+    reload = re.search(":\s(.*)",Rns).group(1)
+    Last_CHG = re.search("at\s(.*)",Last_Ch).group(1)
+
     
-    # Regex to find just the configuration and not the timestamps usually present at the top
-    Runn_reg = re.search(r'version 15.*end',Conf['running'],re.DOTALL)
-    Start_reg = re.search(r'version 15.*end',Conf['startup'],re.DOTALL)
-    Startup = Start_reg.group(0)
-    Runn = Runn_reg.group(0)
-    
-    if Runn == Startup:
-        print(f"\n~~~~~~~ Config up-to-date on {router} ~~~~~~~\n")
+    if Uptime in range(60,3600):
+        Uptime = str(Uptime/60)+' Min'
         
     else:
+        Uptime = str(round(Uptime/3600,2))+' Hr'
+
         
-        # https://napalm.readthedocs.io/en/latest/base.html?highlight=config#napalm.base.base.NetworkDriver.cli
-        wr = ['wr mem']
-        nr.run(task=napalm_cli, commands=[wr])
-        # Using NAPALM CLI option, sending "wr mem" to save the running configuration
-        
-        print(f"\n~~~~~~~ Config saved on {router} ~~~~~~~\n")
-        
-        
-router_list = dict.keys(output) # Nornir output is a Dict with keys from hosts.yaml as keys.
+    mydict['Router'].append(router)
+    mydict['CPU'].append(CPU)
+    mydict['RAM'].append(int(RAM))
+    mydict['Uptime'].append(Uptime)
+    mydict['Last_Reload'].append(reload)
+    mydict['Last_Change'].append(Last_CHG)
+    # appending values to Dict
+
+
+router_list = dict.keys(output)
+
 
 for router in router_list:
-    Conf_result = output[router][0].result
-    Final_Conf = Conf_result['get_config']
-    save_fn(Final_Conf)
-    
-End = time.time()
-print(f"Script exec time : {End-Start}")
+    Env = output[router][0].result
+    Rns = reason[router][0].result
+    Last_Ch = Last_change[router][0].result
+    Env_fn(Env,Rns,Last_Ch)
+
+    Runn_config = Env['get_config']['running']
+    backup = open(f"Conf_backup/{router}_{Start}.txt",'w')
+    backup.write(Runn_config)
+    backup.close()
+    mydict['Conf_backup'].append(f"{router}_{Start}.txt")
+    # Fetching running config and storing it locally
+
+
+df = pd.DataFrame(mydict)
+# Creating Pandas Dataframe from the Output dict collected
+
+End = datetime.datetime.now()
+
+print("\n")
+print(tabulate(df,headers='keys',tablefmt='psql'))
+print(f"\nScript exec time : {End-Start}\n")
