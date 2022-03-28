@@ -1,4 +1,5 @@
-''' This script fetches BGP neighbour details such as Peer Status, Uptime, Peer AS, VRF/Global, Prefix counters.
+''' This script fetches device/router details such as CPU, RAM, Last reload time, Last reload reason and finally performs
+a configuration backup to text file.
 References:
 Working with NORNIR Objects,results etc. https://gist.github.com/danielmacuare/c647880cfc99a605d25c3b669ab63fc7
 NORNIR Plugins https://nornir.tech/nornir/plugins/ '''
