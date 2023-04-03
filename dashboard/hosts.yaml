@@ -1,0 +1,16 @@
+---
+vMX1:
+  hostname: vmx1.norn.lab
+  port: 31003
+  groups:
+    - nos
+vMX2:
+  hostname: vmx2.norn.lab
+  port: 31006
+  groups:
+    - nos
+vMX3:
+  hostname: vmx3.norn.lab
+  port: 31009
+  groups:
+    - nos

@@ -1,0 +1,8 @@
+---
+devices:
+  username: username
+  password: password
+nos:
+  platform: junos
+  groups:
+    - devices
