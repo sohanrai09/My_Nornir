@@ -18,3 +18,7 @@ I have covered the details of the script in my [blog post](https://sohanrai09.gi
 
 ![dashboard_1](https://github.com/sohanrai09/My_Nornir/blob/main/dashboard/dashboard_1.png)
 ![dashboard_2](https://github.com/sohanrai09/My_Nornir/blob/main/dashboard/dashboard_2.png)
+
+### Dashboard in action
+
+https://github.com/sohanrai09/My_Nornir/blob/main/dashboard/dashboard_rec.mov
