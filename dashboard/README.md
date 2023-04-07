@@ -21,4 +21,7 @@ I have covered the details of the script in my [blog post](https://sohanrai09.gi
 
 ### Dashboard in action
 
-https://github.com/sohanrai09/My_Nornir/blob/main/dashboard/dashboard_rec.mov
+
+https://user-images.githubusercontent.com/89385413/230535408-f8bcdbdd-a425-41cd-a42b-f8b38acb2a1a.mov
+
+
